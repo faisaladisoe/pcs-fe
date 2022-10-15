@@ -1,0 +1,7 @@
+{
+  "name": "bikun-tracker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
