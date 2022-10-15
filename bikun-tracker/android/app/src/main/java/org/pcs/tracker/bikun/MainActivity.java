@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package org.pcs.tracker.bikun;
 
 import com.getcapacitor.BridgeActivity;
 
