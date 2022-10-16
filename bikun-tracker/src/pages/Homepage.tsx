@@ -8,7 +8,7 @@ const Homepage: React.FC = () => {
   const ionRouter = useIonRouter();
   document.addEventListener('ionBackButton', (ev) => {
     (ev as BackButtonEvent).detail.register(-1, () => {
-      if (!ionRouter.canGoBack()) {
+      if(!ionRouter.canGoBack()){
         App.exitApp();
       }
     });

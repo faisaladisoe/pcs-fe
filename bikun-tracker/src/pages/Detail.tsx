@@ -1,14 +1,21 @@
-import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonToolbar, useIonRouter } from '@ionic/react';
 import { arrowBackOutline } from 'ionicons/icons';
 import './Detail.css';
 
 const Detail: React.FC = () => {
+  const ionRouter = useIonRouter();
+  const goBack = () => {
+    if(ionRouter.canGoBack()){
+      ionRouter.goBack();
+    }
+  }
+
   return (
     <IonPage>
       <IonHeader class='ion-no-border'>
         <IonToolbar style={{minHeight: 56}}>
           <div style={{paddingLeft: 10}}>
-            <IonButton fill='clear' className='detail-back-button' routerLink='/home'>
+            <IonButton fill='clear' className='detail-back-button' onClick={goBack}>
               <IonIcon icon={arrowBackOutline} size='large'></IonIcon>
             </IonButton>
           </div>
