@@ -1,0 +1,18 @@
+.detail-container {
+    height: calc(100% - 2 * 16px);
+    margin: 16px;
+}
+
+.detail-map-container {
+    background-color: aquamarine;
+    height: 100%;
+}
+
+.detail-back-button {
+    --color: black;
+    --ripple-color: black;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    margin-top: 12px;
+    margin-bottom: 0;
+}
