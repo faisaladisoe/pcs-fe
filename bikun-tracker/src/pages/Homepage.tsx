@@ -1,7 +1,6 @@
-import { BackButtonEvent, IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { BackButtonEvent, IonButton, IonCard, IonCardHeader, IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useIonRouter } from '@ionic/react';
 import { App } from '@capacitor/app';
-import ExploreContainer from '../components/ExploreContainer';
 import './Homepage.css';
 
 const Homepage: React.FC = () => {
@@ -16,20 +15,22 @@ const Homepage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Home</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Home</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer />
+        <IonTitle>Hi, Shel!</IonTitle>
         <IonButton routerLink='/detail'>Detail</IonButton><br/>
         <IonButton routerLink='/check-in'>Check-in</IonButton>
+        <IonList>
+          <IonCard className='ion-card-bus'>
+            <IonCardHeader>
+              <h3>B 123 DD</h3>
+            </IonCardHeader>
+          </IonCard>
+          <IonCard className='ion-card-bus'>
+            <IonCardHeader>
+              <h3>B 123 DD</h3>
+            </IonCardHeader>
+          </IonCard>
+        </IonList>
       </IonContent>
     </IonPage>
   );
