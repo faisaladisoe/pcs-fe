@@ -1,4 +1,4 @@
-import { BackButtonEvent, IonButton, IonCard, IonCardHeader, IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { BackButtonEvent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonList, IonPage, IonTitle } from '@ionic/react';
 import { useIonRouter } from '@ionic/react';
 import { App } from '@capacitor/app';
 import './Homepage.css';
@@ -13,23 +13,56 @@ const Homepage: React.FC = () => {
     });
   });
 
+  const c = (props: any) => {
+    console.log(props)
+  }
+
   return (
     <IonPage>
       <IonContent fullscreen>
         <IonTitle>Hi, Shel!</IonTitle>
-        <IonButton routerLink='/detail'>Detail</IonButton><br/>
-        <IonButton routerLink='/check-in'>Check-in</IonButton>
+       
         <IonList>
-          <IonCard className='ion-card-bus'>
-            <IonCardHeader>
-              <h3>B 123 DD</h3>
+          <IonCard className='ion-card-bus' key={12} onClick={c}>
+            <IonCardHeader className='card-header'>
+              <IonCardTitle>B 15 D - FKM</IonCardTitle>
             </IonCardHeader>
+            <IonCardContent>
+              <IonCardSubtitle>License Plate Number</IonCardSubtitle>
+              <IonCardTitle>B 15 D</IonCardTitle>
+
+              <IonCardSubtitle>Capacity</IonCardSubtitle>
+              <IonCardTitle>Loose</IonCardTitle>
+
+              <IonCardSubtitle>Current Position</IonCardSubtitle>
+              <IonCardTitle>Fakultas Ilmu Keperawatan</IonCardTitle>
+
+              <IonCardSubtitle>ETA</IonCardSubtitle>
+              <IonCardTitle>7 mins</IonCardTitle>
+
+            </IonCardContent>
+            <IonButton routerLink='/detail'>Detail</IonButton><br />
+        <IonButton routerLink='/check-in'>Check-in</IonButton>
           </IonCard>
           <IonCard className='ion-card-bus'>
             <IonCardHeader>
-              <h3>B 123 DD</h3>
+              <IonCardTitle>B 15 D - FKM</IonCardTitle>
             </IonCardHeader>
+            <IonCardContent>
+              <IonCardSubtitle>License Plate Number</IonCardSubtitle>
+              <IonCardTitle>B 15 D</IonCardTitle>
+
+              <IonCardSubtitle>Capacity</IonCardSubtitle>
+              <IonCardTitle>Loose</IonCardTitle>
+
+              <IonCardSubtitle>Current Position</IonCardSubtitle>
+              <IonCardTitle>Fakultas Ilmu Keperawatan</IonCardTitle>
+
+              <IonCardSubtitle>ETA</IonCardSubtitle>
+              <IonCardTitle>7 mins</IonCardTitle>
+            </IonCardContent>
           </IonCard>
+
         </IonList>
       </IonContent>
     </IonPage>
