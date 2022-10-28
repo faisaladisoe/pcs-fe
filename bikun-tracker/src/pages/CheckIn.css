@@ -1,0 +1,49 @@
+.toolbar {
+    --min-height: 72px;
+}
+
+.toolbar-red-line {
+    background-color: red;
+    height: 36px;
+    position: absolute;
+    top: 36px;
+    width: 100%;
+}
+
+.check-in-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.check-in-greeting {
+    font-size: 36px;
+    margin-top: 18px;
+}
+
+.check-in-qr-container {
+    width: min(270px, 75vw);
+    height: min(270px, 75vw);
+    background-color: white;
+    margin-top: 70px;
+}
+
+.check-in-button-container {
+    width: min(270px, 75vw);
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.check-in-button {
+    --background: #47ff5a;
+    --color: black;
+    --ripple-color: black;
+    --border-radius: 19px;
+    --box-shadow: none;
+
+    margin-top: 12px;
+    margin-bottom: 0;
+    width: 100px;
+}
