@@ -17,17 +17,11 @@ const Homepage: React.FC = () => {
 
   useEffect(() => {
     const loadBusData = async () => {
-      let result = null;
-      if (!localStorage.getItem('data')) {
-        const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
-        const response = await fetch(url);
-        result = await response.json();
-        // localStorage.setItem('data', JSON.stringify(result)) PLEASE USE THIS FOR LOCAL DEV TO MINIMIZE REQUEST TO SERVER INSTANCE:)
-        // console.log("YESS")
-      } else {
-        // result = JSON.parse(localStorage.getItem('data') || '')
-      }
-      setData(result);
+      // const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
+      // const response = await fetch(url);
+      // const result = await response.json();
+      // setData(result);
+      setData(JSON.parse(localStorage.getItem('data') || '{}'));
     }
     loadBusData();
   }, [])
@@ -58,7 +52,7 @@ const Homepage: React.FC = () => {
           </div>
         </div>
 
-        <IonList>
+        <IonList className='card-list'>
           {data.map((item: any, index: number) => (
             <IonCard className='ion-card-bus' key={index} onClick={() => showAndHideCardContent(index)}>
               <IonCardHeader id={`ioncardheader${index}`} className='card-header'>

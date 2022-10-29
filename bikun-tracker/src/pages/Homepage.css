@@ -6,8 +6,12 @@
     margin-left: 30px;
     margin-right: 30px;
     display: block;
+  
 }
 
+.card-list {
+    margin-top: 26vh;
+}
 .block-content {
     margin: 10px;
 }
@@ -57,23 +61,33 @@
 
 .main-header {
     display: block;
+    position: fixed;
+    background-color: #FFEA00;
+    z-index: 99;
+    height: 25%;
+    width: 100%;
 }
 
 .title {
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1vh;
 }
 
 .title-text{
+    margin-top: 2vh;
     font-weight: 500;
     font-size: 36px;
+
 }
 
 
 .legend {
     display: block;
     margin-left: 30px;
-    margin-top: 40px;
-    padding-bottom: 2vh;
+    margin-top: 20px;
 
 }
 
@@ -98,6 +112,7 @@
     display: flex;
     align-items: center;
     margin-top: 5px;
+   
 }
 
 ::-webkit-scrollbar,
