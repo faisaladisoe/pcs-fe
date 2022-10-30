@@ -1,29 +1,37 @@
-import { BackButtonEvent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonList, IonPage } from '@ionic/react';
-import { useIonRouter } from '@ionic/react';
-import { App } from '@capacitor/app';
+import {IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonList, IonPage, IonToast } from '@ionic/react';
 import './Homepage.css';
 import { useEffect, useState } from 'react';
+import { App } from '@capacitor/app';
+import { useDispatch, useSelector } from 'react-redux';
+import { reset } from '../redux/checkinRedux';
 
 const Homepage: React.FC = () => {
-  const ionRouter = useIonRouter();
   const [data, setData] = useState([]);
-  document.addEventListener('ionBackButton', (ev) => {
-    (ev as BackButtonEvent).detail.register(-1, () => {
-      if (!ionRouter.canGoBack()) {
-        App.exitApp();
-      }
-    });
-  });
+  const { isSuccess } = useSelector((state)=> (state as any).checkin)
+  const dispatch = useDispatch();
+
+  setTimeout(()=>{
+    dispatch(reset())
+  }, 2500);
+
+  App.addListener('backButton', ({ canGoBack })=>{
+    if(!canGoBack){
+      App.exitApp();
+    }
+  })
 
   useEffect(() => {
     const loadBusData = async () => {
-      // const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
-      // const response = await fetch(url);
-      // const result = await response.json();
-      // setData(result);
-      setData(JSON.parse(localStorage.getItem('data') || '{}'));
+      const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
+      const response = await fetch(url);
+      const result = await response.json();
+      setData(result);
+      // setData(JSON.parse(localStorage.getItem('data') || '{}'));
     }
-    loadBusData();
+    loadBusData().catch((err)=>{
+      setData([])
+      console.log("YESSS")
+    });
   }, [])
 
   const showAndHideCardContent = (id: any) => {
@@ -53,7 +61,7 @@ const Homepage: React.FC = () => {
         </div>
 
         <IonList className='card-list'>
-          {data.map((item: any, index: number) => (
+          {data.length > 0 ? data.map((item: any, index: number) => (
             <IonCard className='ion-card-bus' key={index} onClick={() => showAndHideCardContent(index)}>
               <IonCardHeader id={`ioncardheader${index}`} className='card-header'>
                 <IonCardTitle>{`${item['license-plate-number']} - ${item['current-position']}`}</IonCardTitle>
@@ -90,9 +98,21 @@ const Homepage: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-          ))}
+          )) : (
+            <IonCard className='ion-card-error'>
+              <IonCardHeader>
+                <IonCardTitle className='error-title'>Can't load Bikun data at this time</IonCardTitle>
+              </IonCardHeader>
+            </IonCard>
+          )}
 
         </IonList>
+        <IonToast
+                    isOpen={isSuccess}
+                    message="Check-In Success. Enjoy the ride!"
+                    duration={2000}
+                    position='top'
+                    />
       </IonContent>
     </IonPage>
   );

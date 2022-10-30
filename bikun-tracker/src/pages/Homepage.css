@@ -12,6 +12,7 @@
 .card-list {
     margin-top: 30vh;
 }
+
 .block-content {
     margin: 10px;
 }
@@ -34,6 +35,21 @@
     width: 10px;
     height: 5vh;
     
+}
+
+.error-title {
+    font-style: italic;
+    font-weight: 700;
+    color: red;
+}
+
+.ion-card-error {
+    background-color: #ffff;
+    opacity: 82%;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .line-red {
@@ -64,7 +80,7 @@
     position: fixed;
     background-color: #FFEA00;
     z-index: 99;
-    height: 25%;
+    height: 30%;
     width: 100%;
 }
 
