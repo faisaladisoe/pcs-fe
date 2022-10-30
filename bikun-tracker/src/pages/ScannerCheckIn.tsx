@@ -58,12 +58,9 @@ const ScannerCheckIn: React.FC = () => {
         const checkPermission = async () => {
             try {
                 const status = await BarcodeScanner.checkPermission({ force: true })
+                BarcodeScanner.prepare();
+                return status.granted;
 
-                if (status.granted) {
-                    return true
-                }
-
-                return false
             } catch (error) {
                 if (error instanceof Error) {
                     setErr(error.message)
@@ -83,7 +80,7 @@ const ScannerCheckIn: React.FC = () => {
         return () => { }
     }, [])
 
-   
+
     return (
         <IonPage>
 

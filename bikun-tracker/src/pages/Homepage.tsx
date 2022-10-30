@@ -1,4 +1,4 @@
-import {IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonList, IonPage, IonToast } from '@ionic/react';
+import {IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonList, IonLoading, IonPage, IonToast } from '@ionic/react';
 import './Homepage.css';
 import { useEffect, useState } from 'react';
 import { App } from '@capacitor/app';
@@ -8,6 +8,8 @@ import { reset } from '../redux/checkinRedux';
 const Homepage: React.FC = () => {
   const [data, setData] = useState([]);
   const { isSuccess } = useSelector((state)=> (state as any).checkin)
+  const [loading, setLoading] = useState(true);
+  const [errorLoadData, setErrorLoadData] = useState(false);
   const dispatch = useDispatch();
 
   setTimeout(()=>{
@@ -20,18 +22,23 @@ const Homepage: React.FC = () => {
     }
   })
 
+  const loadBusData = async () => {
+    const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
+    const response = await fetch(url);
+    const result = await response.json();
+    return result;
+  }
+
   useEffect(() => {
-    const loadBusData = async () => {
-      const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
-      const response = await fetch(url);
-      const result = await response.json();
-      setData(result);
-      // setData(JSON.parse(localStorage.getItem('data') || '{}'));
-    }
-    loadBusData().catch((err)=>{
-      setData([])
-      console.log("YESSS")
+    loadBusData()
+    .then((res)=>{
+      setLoading(false)
+      setData(res)
+    })
+    .catch((err)=>{
+      setErrorLoadData(true);
     });
+
   }, [])
 
   const showAndHideCardContent = (id: any) => {
@@ -42,6 +49,11 @@ const Homepage: React.FC = () => {
 
   return (
     <IonPage>
+      <IonLoading
+        isOpen={loading && !errorLoadData}
+        message='Retrieving Bikun Data For You'
+        duration={1000000}
+      />
       <IonContent fullscreen className='no-scroll'>
         <div className="main-header">
           <div className="red-bar"></div>
@@ -61,7 +73,7 @@ const Homepage: React.FC = () => {
         </div>
 
         <IonList className='card-list'>
-          {data.length > 0 ? data.map((item: any, index: number) => (
+          {!errorLoadData ? data.map((item: any, index: number) => (
             <IonCard className='ion-card-bus' key={index} onClick={() => showAndHideCardContent(index)}>
               <IonCardHeader id={`ioncardheader${index}`} className='card-header'>
                 <IonCardTitle>{`${item['license-plate-number']} - ${item['current-position']}`}</IonCardTitle>
