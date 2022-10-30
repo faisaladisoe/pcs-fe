@@ -85,7 +85,7 @@ const Homepage: React.FC = () => {
                 </div>
                 <div className="card-btns">
                   <IonButton className='btn' routerLink='/detail'>Detail</IonButton><br />
-                  <IonButton className='btn' routerLink='/check-in'>Check-in</IonButton>
+                  <IonButton className='btn' routerLink='/check-in/qrcode'>Check-in</IonButton>
                 </div>
               </IonCardContent>
             </IonCard>
