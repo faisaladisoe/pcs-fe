@@ -2,14 +2,17 @@ import { IonButton, IonButtons, IonHeader, IonIcon, IonPage, IonTitle, IonToast,
 import { useEffect, useState } from "react";
 import { BarcodeScanner, SupportedFormat } from '@capacitor-community/barcode-scanner';
 import { App } from '@capacitor/app';
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import './ScannerCheckIn.css'
 import { qrCode, stopCircleOutline, wifiOutline } from "ionicons/icons";
 import { useDispatch } from 'react-redux';
 import { checkInFail, checkInSuccess } from "../redux/checkinRedux";
+import axios from 'axios';
 
 const ScannerCheckIn: React.FC = () => {
     const history = useHistory();
+    const location = useLocation();
+    const licensePlateNumber = location.pathname.split('/')[3];
     const [err, setErr] = useState<string>();
     const [useNFC, setNFC] = useState(false);
     const dispatch = useDispatch();
@@ -45,10 +48,30 @@ const ScannerCheckIn: React.FC = () => {
         // if the result has content
         if (result.hasContent) {
             console.log(result.content); // log the raw scanned content
-            dispatch(checkInSuccess());
-            stopScan();
+            if (licensePlateNumber === result.content) {
+                var config = {
+                    method: 'patch',
+                    url: `http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/checkinout/increment/${result.content}`,
+                    headers: {}
+                };
+
+                axios(config)
+                    .then((res) => {
+                        dispatch(checkInSuccess(licensePlateNumber));
+                        stopScan();
+                    })
+                    .catch((err) => {
+                        dispatch(checkInFail());
+                        setErr(err.message)
+                    });
+            }else{
+                dispatch(checkInFail());
+                setErr('QR Code Doesn\'t match');
+                setTimeout(()=>{ setErr(''); startScan();},1000)
+            }
         } else {
-            dispatch(checkInFail())
+            dispatch(checkInFail());
+            setErr('Invalid QR Code')
         }
     };
 
@@ -65,7 +88,6 @@ const ScannerCheckIn: React.FC = () => {
                 if (error instanceof Error) {
                     setErr(error.message)
                     dispatch(checkInFail())
-                    console.log(error.message)
                 } else {
                     console.log(String(error))
                 }

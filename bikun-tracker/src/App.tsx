@@ -43,7 +43,7 @@ const App: React.FC = () => (
         <Route exact path="/check-in">
           <CheckIn />
         </Route>
-        <Route exact path="/check-in/qrcode">
+        <Route exact path="/check-in/qrcode/:licenseplate">
           <ScannerCheckIn/>
         </Route>
       </IonRouterOutlet>

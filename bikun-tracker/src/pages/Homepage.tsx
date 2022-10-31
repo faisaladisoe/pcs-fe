@@ -1,9 +1,11 @@
-import {IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonList, IonLoading, IonPage, IonToast } from '@ionic/react';
+import {IonCard, IonCardHeader, IonCardTitle, IonContent, IonList, IonLoading, IonPage, IonToast } from '@ionic/react';
 import './Homepage.css';
 import { useEffect, useState } from 'react';
 import { App } from '@capacitor/app';
 import { useDispatch, useSelector } from 'react-redux';
 import { reset } from '../redux/checkinRedux';
+import axios from 'axios';
+import BusCard from '../components/BusCard';
 
 const Homepage: React.FC = () => {
   const [data, setData] = useState([]);
@@ -24,8 +26,8 @@ const Homepage: React.FC = () => {
 
   const loadBusData = async () => {
     const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
-    const response = await fetch(url);
-    const result = await response.json();
+    const response = await axios.get(url);
+    const result = response.data;
     return result;
   }
 
@@ -39,14 +41,8 @@ const Homepage: React.FC = () => {
       setErrorLoadData(true);
     });
 
-  }, [])
-
-  const showAndHideCardContent = (id: any) => {
-    const cardContent = document.getElementById(`ioncardcontent${id}`) as HTMLElement;
-    cardContent.style.transition = 'all 2s ease'
-    cardContent.style.display = cardContent.style.display === 'none' ? '' : 'none';
-  }
-
+  }, [dispatch, isSuccess])
+ 
   return (
     <IonPage>
       <IonLoading
@@ -73,43 +69,8 @@ const Homepage: React.FC = () => {
         </div>
 
         <IonList className='card-list'>
-          {!errorLoadData ? data.map((item: any, index: number) => (
-            <IonCard className='ion-card-bus' key={index} onClick={() => showAndHideCardContent(index)}>
-              <IonCardHeader id={`ioncardheader${index}`} className='card-header'>
-                <IonCardTitle>{`${item['license-plate-number']} - ${item['current-position']}`}</IonCardTitle>
-                <div className={`bus-line-color line-${item.line}`}></div>
-              </IonCardHeader>
-              <IonCardContent className='ioncardcontent' id={`ioncardcontent${index}`} style={{ display: 'none' }}>
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>License Plate Number</IonCardSubtitle>
-                  <IonCardTitle>{item['license-plate-number']}</IonCardTitle>
-                </div>
-
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>Capacity</IonCardSubtitle>
-                  <IonCardTitle>{item.capacity}</IonCardTitle>
-                </div>
-
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>Current Position</IonCardSubtitle>
-                  <IonCardTitle>{item['current-position']}</IonCardTitle>
-
-                </div>
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>ETA</IonCardSubtitle>
-                  <IonCardTitle>{item['ETA']}</IonCardTitle>
-                </div>
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>Updated At</IonCardSubtitle>
-                  <IonCardTitle>{new Date(item['updatedAt']).toLocaleString()}</IonCardTitle>
-                </div>
-                <div className="card-btns">
-                  <IonButton className='btn' routerLink='/detail'>Detail</IonButton><br />
-                  <IonButton className='btn' routerLink='/check-in/qrcode'>Check-in</IonButton>
-                </div>
-              </IonCardContent>
-            </IonCard>
-
+          {!errorLoadData ? data.map((item: any, idx: number) => (
+            <BusCard index={idx} item={item}/>
           )) : (
             <IonCard className='ion-card-error'>
               <IonCardHeader>

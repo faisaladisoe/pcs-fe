@@ -1,42 +1,3 @@
-.ion-card-bus {
-    color: black;
-    background-color: #ffff;
-    opacity: 82%;
-    border-radius: 0px 15px 15px 0px;
-    margin-left: 30px;
-    margin-right: 30px;
-    display: block;
-  
-}
-
-.card-list {
-    margin-top: 30vh;
-}
-
-.block-content {
-    margin: 10px;
-}
-
-.subtitle{
-    font-style: italic;
-}
-
-.card-btns {
-    display: block;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn {
-    width: 100%;
-}
-
-.bus-line-color{
-    width: 10px;
-    height: 5vh;
-    
-}
-
 .error-title {
     font-style: italic;
     font-weight: 700;
@@ -50,22 +11,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.line-red {
-    background-color: red;
-}
-
-.line-blue {
-    background-color: blue;
-  
-}
-
-.card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  
 }
 
 .red-bar {
