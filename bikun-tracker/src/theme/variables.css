@@ -244,3 +244,8 @@ ion-button {
     --ion-card-background: #1e1e1e;
   }
 }
+
+body.scanner-active {
+  --background: transparent;
+  --ion-background-color: transparent;
+}

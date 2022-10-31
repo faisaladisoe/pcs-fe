@@ -1,45 +1,55 @@
-import { BackButtonEvent, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonList, IonPage } from '@ionic/react';
-import { useIonRouter } from '@ionic/react';
-import { App } from '@capacitor/app';
+import {IonCard, IonCardHeader, IonCardTitle, IonContent, IonList, IonLoading, IonPage, IonToast } from '@ionic/react';
 import './Homepage.css';
 import { useEffect, useState } from 'react';
+import { App } from '@capacitor/app';
+import { useDispatch, useSelector } from 'react-redux';
+import { reset } from '../redux/checkinRedux';
+import axios from 'axios';
+import BusCard from '../components/BusCard';
 
 const Homepage: React.FC = () => {
-  const ionRouter = useIonRouter();
   const [data, setData] = useState([]);
-  document.addEventListener('ionBackButton', (ev) => {
-    (ev as BackButtonEvent).detail.register(-1, () => {
-      if (!ionRouter.canGoBack()) {
-        App.exitApp();
-      }
-    });
-  });
+  const { isSuccess } = useSelector((state)=> (state as any).checkin)
+  const [loading, setLoading] = useState(true);
+  const [errorLoadData, setErrorLoadData] = useState(false);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const loadBusData = async () => {
-      let result = null;
-      if (!localStorage.getItem('data')) {
-        const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
-        const response = await fetch(url);
-        result = await response.json();
-        // localStorage.setItem('data', JSON.stringify(result)) PLEASE USE THIS FOR LOCAL DEV TO MINIMIZE REQUEST TO SERVER INSTANCE:)
-        // console.log("YESS")
-      } else {
-        // result = JSON.parse(localStorage.getItem('data') || '')
-      }
-      setData(result);
+  setTimeout(()=>{
+    dispatch(reset())
+  }, 2500);
+
+  App.addListener('backButton', ({ canGoBack })=>{
+    if(!canGoBack){
+      App.exitApp();
     }
-    loadBusData();
-  }, [])
+  })
 
-  const showAndHideCardContent = (id: any) => {
-    const cardContent = document.getElementById(`ioncardcontent${id}`) as HTMLElement;
-    cardContent.style.transition = 'all 2s ease'
-    cardContent.style.display = cardContent.style.display === 'none' ? '' : 'none';
+  const loadBusData = async () => {
+    const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
+    const response = await axios.get(url);
+    const result = response.data;
+    return result;
   }
 
+  useEffect(() => {
+    loadBusData()
+    .then((res)=>{
+      setLoading(false)
+      setData(res)
+    })
+    .catch((err)=>{
+      setErrorLoadData(true);
+    });
+
+  }, [dispatch, isSuccess])
+ 
   return (
     <IonPage>
+      <IonLoading
+        isOpen={loading && !errorLoadData}
+        message='Retrieving Bikun Data For You'
+        duration={1000000}
+      />
       <IonContent fullscreen className='no-scroll'>
         <div className="main-header">
           <div className="red-bar"></div>
@@ -58,47 +68,24 @@ const Homepage: React.FC = () => {
           </div>
         </div>
 
-        <IonList>
-          {data.map((item: any, index: number) => (
-            <IonCard className='ion-card-bus' key={index} onClick={() => showAndHideCardContent(index)}>
-              <IonCardHeader id={`ioncardheader${index}`} className='card-header'>
-                <IonCardTitle>{`${item['license-plate-number']} - ${item['current-position']}`}</IonCardTitle>
-                <div className={`bus-line-color line-${item.line}`}></div>
+        <IonList className='card-list'>
+          {!errorLoadData ? data.map((item: any, idx: number) => (
+            <BusCard index={idx} item={item}/>
+          )) : (
+            <IonCard className='ion-card-error'>
+              <IonCardHeader>
+                <IonCardTitle className='error-title'>Can't load Bikun data at this time</IonCardTitle>
               </IonCardHeader>
-              <IonCardContent className='ioncardcontent' id={`ioncardcontent${index}`} style={{ display: 'none' }}>
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>License Plate Number</IonCardSubtitle>
-                  <IonCardTitle>{item['license-plate-number']}</IonCardTitle>
-                </div>
-
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>Capacity</IonCardSubtitle>
-                  <IonCardTitle>{item.capacity}</IonCardTitle>
-                </div>
-
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>Current Position</IonCardSubtitle>
-                  <IonCardTitle>{item['current-position']}</IonCardTitle>
-
-                </div>
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>ETA</IonCardSubtitle>
-                  <IonCardTitle>{item['ETA']}</IonCardTitle>
-                </div>
-                <div className="block-content">
-                  <IonCardSubtitle className='subtitle'>Updated At</IonCardSubtitle>
-                  <IonCardTitle>{new Date(item['updatedAt']).toLocaleString()}</IonCardTitle>
-                </div>
-                <div className="card-btns">
-                  <IonButton className='btn' routerLink='/detail'>Detail</IonButton><br />
-                  <IonButton className='btn' routerLink='/check-in'>Check-in</IonButton>
-                </div>
-              </IonCardContent>
             </IonCard>
-
-          ))}
+          )}
 
         </IonList>
+        <IonToast
+                    isOpen={isSuccess}
+                    message="Check-In Success. Enjoy the ride!"
+                    duration={2000}
+                    position='top'
+                    />
       </IonContent>
     </IonPage>
   );
