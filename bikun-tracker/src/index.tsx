@@ -8,22 +8,15 @@ import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import ReactDOM from 'react-dom/client';
 
-// const container = document.getElementById('root');
-// const root = createRoot(container!);
-// root.render(
-//   <Provider store={store}>
-//   <PersistGate loading={null} persistor={persistor}>
-//     <App />
-//   </PersistGate>
-// </Provider>
-// );
-
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <Provider store={store}>
+  <><Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <App />
     </PersistGate>
   </Provider>
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEE6M9u11QPuOsihq4bLmh0c_YFsuxZ8s&callback=initMap">
+  </script></>
 );
 
 
