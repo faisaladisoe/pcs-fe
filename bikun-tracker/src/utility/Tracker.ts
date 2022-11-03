@@ -1,4 +1,4 @@
-import { ref, update } from "firebase/database";
+import { ref, set, update } from "firebase/database";
 import db from "./firebaseConfig";
 
 
@@ -11,8 +11,8 @@ const clearWatch = (id: any) => {
 
 success = (position: any, licensePlateNumber: string) => {
     const {latitude, longitude, speed } = position;
-    console.log({id})
-    update(ref(db, 'bikun/'+licensePlateNumber), {
+    console.log(position)
+    set(ref(db, 'bikun/'+licensePlateNumber), {
       licensePlateNumber,
       latitude,
       longitude,

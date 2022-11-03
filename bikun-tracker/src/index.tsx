@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </PersistGate>
   </Provider>
   <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEE6M9u11QPuOsihq4bLmh0c_YFsuxZ8s&callback=initMap">
+    src={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_MAPS_API_KEY}&callback=initMap`}>
   </script></>
 );
 

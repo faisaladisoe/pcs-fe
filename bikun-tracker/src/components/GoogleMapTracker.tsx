@@ -6,14 +6,14 @@ import { GoogleMap } from '@capacitor/google-maps';
 import { analytics } from 'ionicons/icons';
 
 interface Maps{
-  position: GeolocationPosition;
+  position: any;
 }
 const GoogleMapTracker: React.FC<Maps> = (position: any): JSX.Element => {
   //  This key is now dead!
   //  Replace with your own :)
   //  Remember to secure keys using env files or requesting from server!
   //  This was for demo purposes :)
-  const key = "AIzaSyB-DjFZ3kdC36HTB0cqOvcahyP22S4Pedc";
+  const key = process.env.REACT_APP_MAPS_API_KEY || '';
   let newMap: GoogleMap;
   let markersId: string[] = [''];
   const mapRef = useRef(null);
@@ -79,7 +79,8 @@ const GoogleMapTracker: React.FC<Maps> = (position: any): JSX.Element => {
     });
 
   }
-  setCamera(position.coords)
+  console.log({mymap: position})
+  setCamera(position)
   return (
     <div className="map-wrapper">
       <capacitor-google-map ref={mapRef} id="map"></capacitor-google-map>

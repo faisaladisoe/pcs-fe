@@ -18,7 +18,7 @@ const Detail: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-          <GoogleMapTracker/>
+          <GoogleMapTracker position={new GeolocationPosition()}/>
       </IonContent>
         
     </IonPage>
