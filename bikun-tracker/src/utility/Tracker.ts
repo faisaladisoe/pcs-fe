@@ -33,13 +33,21 @@ watch = (licensePlateNumber: string) => {
     })
 }
 
-const startAndStopTracker = (licensePlateNumber: string) => {
-  if (isWatching) {
-      isWatching = false
-     clearWatch(id)
+const startTracker = (licensePlateNumber: string) => {
+  if (!isWatching) {
+    isWatching = true
+    watch(licensePlateNumber)
   } else {
-      isWatching = true
-      watch(licensePlateNumber)
+      console.log('Already started')
   }
 }
-export{startAndStopTracker};
+
+const stopTracker = () => {
+    if(isWatching){
+        isWatching = false;
+        clearWatch(id)
+    }else{
+        console.warn('Already stopped')
+    }
+}
+export{startTracker, stopTracker};

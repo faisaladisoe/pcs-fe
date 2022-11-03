@@ -13,7 +13,7 @@ const Homepage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [errorLoadData, setErrorLoadData] = useState(false);
   const dispatch = useDispatch();
-
+  
   setTimeout(()=>{
     dispatch(reset())
   }, 2500);
@@ -23,6 +23,8 @@ const Homepage: React.FC = () => {
       App.exitApp();
     }
   })
+
+  
 
   const loadBusData = async () => {
     const url = 'http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/schedule';
@@ -36,9 +38,11 @@ const Homepage: React.FC = () => {
     .then((res)=>{
       setLoading(false)
       setData(res)
+      console.log(res)
     })
     .catch((err)=>{
       setErrorLoadData(true);
+      console.log(err)
     });
 
   }, [dispatch, isSuccess])

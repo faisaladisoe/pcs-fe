@@ -24,6 +24,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import ScannerCheckIn from './pages/ScannerCheckIn';
+import DriverHome from './pages/DriverHome';
+import DriverScanBus from './pages/DriverScanBus';
 
 setupIonicReact();
 
@@ -45,6 +47,12 @@ const App: React.FC = () => (
         </Route>
         <Route exact path="/check-in/qrcode/:licenseplate">
           <ScannerCheckIn/>
+        </Route>
+        <Route exact path="/driver/drive/:licenseplate">
+          <DriverHome/>
+        </Route>
+        <Route exact path="/driver/scan">
+          <DriverScanBus/>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
