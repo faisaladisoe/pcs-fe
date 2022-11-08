@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@awesome-cordova-plugins/background-geolocation": "^6.1.0",
     "@awesome-cordova-plugins/core": "^6.1.0",
-    "@awesome-cordova-plugins/geolocation": "^6.1.0",
     "@capacitor-community/barcode-scanner": "^3.0.0",
     "@capacitor/android": "4.3.0",
     "@capacitor/app": "4.0.1",
@@ -15,6 +13,7 @@
     "@capacitor/haptics": "4.0.1",
     "@capacitor/keyboard": "4.0.1",
     "@capacitor/status-bar": "4.0.1",
+    "@ionic-native/background-geolocation": "^5.36.0",
     "@ionic-native/native-geocoder": "^5.36.0",
     "@ionic/react": "^6.3.1",
     "@ionic/react-router": "^6.0.0",

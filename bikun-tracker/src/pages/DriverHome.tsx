@@ -51,7 +51,7 @@ const DriverHome: React.FC = () => {
                             }
                         </div>
                         <div className="map-driver">
-                            <GoogleMapTracker position={position}/>
+                            <GoogleMapTracker/>
                         </div>
                     </IonCardContent>
                 </IonCard>

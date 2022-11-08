@@ -1,6 +1,5 @@
-import { ref, set, update } from "firebase/database";
+import { ref, set} from "firebase/database";
 import db from "./firebaseConfig";
-import {Geolocation} from '@capacitor/geolocation'
 
 let id: any,
     isWatching = false
@@ -8,6 +7,7 @@ let id: any,
 const clearWatch = async (id: any) => {
     return window.navigator.geolocation.clearWatch(id);
 },
+
 
 success = (position: any, licensePlateNumber: string) => {
     const {latitude, longitude, speed } = position.coords;
@@ -17,7 +17,7 @@ success = (position: any, licensePlateNumber: string) => {
       latitude,
       longitude,
       speed,
-    }).then((val)=> console.log(val))
+    })
     .then(()=> console.log("SET"))
     .catch(err => console.log({err}))
 },

@@ -1,30 +1,18 @@
-import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonToolbar, useIonViewDidEnter, useIonViewDidLeave, useIonViewWillLeave } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonToolbar, useIonViewDidEnter, useIonViewWillLeave } from '@ionic/react';
 import { arrowBackOutline } from 'ionicons/icons';
 import './Detail.css';
 import GoogleMapTracker from '../components/GoogleMapTracker';
-import { useEffect, useState } from 'react';
 import { startTracker, stopTracker } from '../utility/Tracker';
-import { DataSnapshot, onValue, ref } from 'firebase/database';
-import db from '../utility/firebaseConfig';
+import { useLocation } from 'react-router';
 
 const Detail: React.FC = () => {
-  const [location, setLocation] = useState({latitude:-6.364677, longitude:  106.829123});
+  const location = useLocation();
+  const licensePlateNumber = decodeURIComponent(location.pathname.split('/')[2]);
+
   useIonViewDidEnter(()=>{
-    startTracker('D1')
-    console.log('OOOPPPPPPSSSS')
-    onValue(ref(db, 'bikun/D1'), (snap)=>{
-      if(snap.exists()){
-        setLocation(snap.val())
-      }else{
-        console.log("YAAH")
-      }
-    })
-    
+    startTracker(licensePlateNumber)    
   })
   useIonViewWillLeave(()=>stopTracker())
-  useEffect(()=>{
-    console.log("HAI")
-  },[location]);
   return (
     <IonPage>
       <IonHeader class='ion-no-border'>
@@ -37,7 +25,7 @@ const Detail: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-          <GoogleMapTracker position={location}/>
+          <GoogleMapTracker licensePlateNumber={licensePlateNumber}/>
       </IonContent>
         
     </IonPage>
