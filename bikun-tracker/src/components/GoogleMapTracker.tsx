@@ -1,9 +1,12 @@
-import { IonButton, IonCol, IonContent, IonHeader, IonPage, IonRow, IonTitle, IonToolbar, useIonModal, useIonViewWillEnter } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonHeader, IonPage, IonRow, IonTitle, IonToolbar, useIonModal, useIonViewDidEnter, useIonViewDidLeave, useIonViewWillEnter, useIonViewWillLeave } from '@ionic/react';
 import { useRef, useState } from 'react';
 import './GoogleMapTracker.css';
 
 import { GoogleMap } from '@capacitor/google-maps';
 import { analytics } from 'ionicons/icons';
+import { stopTracker } from '../utility/Tracker';
+import { onValue, ref } from 'firebase/database';
+import db from '../utility/firebaseConfig';
 
 interface Maps{
   position: any;
@@ -18,6 +21,7 @@ const GoogleMapTracker: React.FC<Maps> = (position: any): JSX.Element => {
   let markersId: string[] = [''];
   const mapRef = useRef(null);
   const [show, setShow] = useState(false);
+  const [location, setLocation] = useState({latitude:-6.364677, longitude:  106.829123});
 
   const [mapConfig, setMapConfig] = useState({
 
@@ -77,15 +81,21 @@ const GoogleMapTracker: React.FC<Maps> = (position: any): JSX.Element => {
       apiKey: key,
       config: mapConfig
     });
-
+    await newMap.enableCurrentLocation(true)
+    await newMap.enableClustering()
   }
   console.log({mymap: position})
-  setCamera(position)
+  useIonViewDidEnter(async ()=>{
+    await createMap();
+  })
+  useIonViewWillLeave(()=>(document.querySelector('body') as HTMLElement).classList.remove('remove-bg'))
+  useIonViewDidLeave(async ()=> {
+    await newMap.destroy();
+  })
   return (
     <div className="map-wrapper">
       <capacitor-google-map ref={mapRef} id="map"></capacitor-google-map>
-      <IonButton onClick={createMap}>Show Map</IonButton>
-
+      {/* <IonButton onClick={createMap}>Show Map</IonButton> */}
     </div>
   );
 };

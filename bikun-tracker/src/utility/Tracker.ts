@@ -1,23 +1,25 @@
 import { ref, set, update } from "firebase/database";
 import db from "./firebaseConfig";
-
+import {Geolocation} from '@capacitor/geolocation'
 
 let id: any,
     isWatching = false
 
-const clearWatch = (id: any) => {
-    return window.navigator.geolocation.clearWatch(id)
+const clearWatch = async (id: any) => {
+    return window.navigator.geolocation.clearWatch(id);
 },
 
 success = (position: any, licensePlateNumber: string) => {
-    const {latitude, longitude, speed } = position;
+    const {latitude, longitude, speed } = position.coords;
     console.log(position)
-    set(ref(db, 'bikun/'+licensePlateNumber), {
+    set(ref(db, `bikun/${licensePlateNumber}`), {
       licensePlateNumber,
       latitude,
       longitude,
       speed,
-    })
+    }).then((val)=> console.log(val))
+    .then(()=> console.log("SET"))
+    .catch(err => console.log({err}))
 },
 
 error = (err: any) => {
@@ -26,11 +28,7 @@ error = (err: any) => {
 },
 
 watch = (licensePlateNumber: string) => {
-    id = navigator.geolocation.watchPosition((pos)=>success(pos, licensePlateNumber), error, {
-        "maximumAge": 0,
-        "timeout": 15000,
-        "enableHighAccuracy": true
-    })
+    id = window.navigator.geolocation.watchPosition((pos)=>success(pos, licensePlateNumber), error,{enableHighAccuracy:true})
 }
 
 const startTracker = (licensePlateNumber: string) => {
