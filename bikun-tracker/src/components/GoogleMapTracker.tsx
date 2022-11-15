@@ -48,8 +48,8 @@ const GoogleMapTracker: React.FC<Maps> = (props: any): JSX.Element => {
         animate: true,
 
       }))
-      .then(() => newMap.removeMarkers(markersId.slice(0, markersId.length - 1)))
-      .then(() => markersId = markersId.slice(markersId.length - 1))
+      .then(() => {newMap.removeMarkers(markersId.slice(0, markersId.length - 1))})
+      .then(() => {markersId = markersId.slice(markersId.length - 1)})
 
 
 
