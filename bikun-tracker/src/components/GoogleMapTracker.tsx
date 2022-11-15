@@ -8,6 +8,7 @@ import db from '../utility/firebaseConfig';
 
 interface Maps {
   licensePlateNumber?: string;
+  isDriver?: any;
 }
 const GoogleMapTracker: React.FC<Maps> = (props: any): JSX.Element => {
   //  This key is now dead!
@@ -19,13 +20,15 @@ const GoogleMapTracker: React.FC<Maps> = (props: any): JSX.Element => {
   let markersId: string[] = [''];
   const mapRef = useRef(null);
 
+
+  
   const [mapConfig] = useState({
 
     zoom: 30,
     center: {
 
-      lat: -6.364677,
-      lng: 106.829123
+      lat: -6.365477607151095,
+      lng: 106.82646617153934
     }
   });
 
@@ -60,11 +63,11 @@ const GoogleMapTracker: React.FC<Maps> = (props: any): JSX.Element => {
         lng: marker.lng
       },
       title: marker.title,
-      iconUrl:'assets/icon/icon.png',
+      // iconUrl:'assets/icon/icon.png',
       isFlat:true,
       iconSize: {
-        width: 50,
-        height: 50
+        width: 30,
+        height: 30
       }
     });
     markersId.push(id)
@@ -84,14 +87,28 @@ const GoogleMapTracker: React.FC<Maps> = (props: any): JSX.Element => {
     await newMap.enableCurrentLocation(true)
     await newMap.enableClustering()
   }
-
+  
   useIonViewDidEnter(() => {
     createMap()
-      .then(() => onValue(ref(db, `bikun/${props.licensePlateNumber}`), (snap: DataSnapshot) => {
-        if (snap.exists()) {
-          setCamera(snap.val())
+      .then(() => {
+        if(!props.isDriver){
+          onValue(ref(db, `bikun/${props.licensePlateNumber}`), (snap: DataSnapshot) => {
+            if (snap.exists()) {
+              setCamera(snap.val())
+            }
+          })
         }
-      }))
+      }).then(()=>{
+        if(props.isDriver){
+          newMap.setCamera({
+            coordinate: {
+              lat: -6.365477607151095,
+              lng: 106.82646617153934
+            },
+            animate: true,
+          })
+        }
+      })
   })
   useIonViewWillLeave(() => (document.querySelector('body') as HTMLElement).classList.remove('remove-bg'))
   useIonViewDidLeave(async () => {
@@ -100,7 +117,6 @@ const GoogleMapTracker: React.FC<Maps> = (props: any): JSX.Element => {
   return (
     <div className="map-wrapper">
       <capacitor-google-map ref={mapRef} id="map"></capacitor-google-map>
-      {/* <IonButton onClick={createMap}>Show Map</IonButton> */}
     </div>
   );
 };

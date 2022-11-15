@@ -11,9 +11,8 @@ const clearWatch = async (id: any) => {
 
 success = (position: any, licensePlateNumber: string) => {
     const {latitude, longitude, speed } = position.coords;
-    console.log(position)
     set(ref(db, `bikun/${licensePlateNumber}`), {
-      licensePlateNumber,
+      licensePlateNumber: licensePlateNumber,
       latitude,
       longitude,
       speed,

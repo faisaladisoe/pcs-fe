@@ -26,6 +26,7 @@ import './theme/variables.css';
 import ScannerCheckIn from './pages/ScannerCheckIn';
 import DriverHome from './pages/DriverHome';
 import DriverScanBus from './pages/DriverScanBus';
+import Login from './pages/Login';
 
 setupIonicReact();
 
@@ -33,12 +34,23 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route exact path="/">
+          <Redirect to="/login" />
+        </Route>
         <Route exact path="/home">
           <Homepage />
         </Route>
-        <Route exact path="/">
+
+        <Route exact path="/login/driver">
+          <DriverHome />
+        </Route>
+        <Route exact path="/login/guest">
           <Redirect to="/home" />
         </Route>
+
         <Route exact path="/detail/:licensePlate">
           <Detail />
         </Route>
@@ -46,13 +58,13 @@ const App: React.FC = () => (
           <CheckIn />
         </Route>
         <Route exact path="/check-in/qrcode/:licenseplate">
-          <ScannerCheckIn/>
+          <ScannerCheckIn />
         </Route>
         <Route exact path="/driver/drive/:licenseplate">
-          <DriverHome/>
+          <DriverHome />
         </Route>
         <Route exact path="/driver/scan">
-          <DriverScanBus/>
+          <DriverScanBus />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
