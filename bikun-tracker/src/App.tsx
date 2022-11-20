@@ -43,28 +43,20 @@ const App: React.FC = () => (
         <Route exact path="/home">
           <Homepage />
         </Route>
-
         <Route exact path="/login/driver">
           <DriverHome />
         </Route>
         <Route exact path="/login/guest">
           <Redirect to="/home" />
         </Route>
-
         <Route exact path="/detail/:licensePlate">
           <Detail />
         </Route>
         <Route exact path="/check-in">
           <CheckIn />
         </Route>
-        <Route exact path="/check-in/qrcode/:licenseplate">
-          <ScannerCheckIn />
-        </Route>
-        <Route exact path="/driver/drive/:licenseplate">
-          <DriverHome />
-        </Route>
-        <Route exact path="/driver/scan">
-          <DriverScanBus />
+        <Route exact path="/check-in/qrcode">
+          <ScannerCheckIn/>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>

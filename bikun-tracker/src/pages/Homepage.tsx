@@ -1,20 +1,28 @@
-import {IonCard, IonCardHeader, IonCardTitle, IonContent, IonList, IonLoading, IonPage, IonToast } from '@ionic/react';
+import {IonButton, IonCard, IonCardHeader, IonCardTitle, IonContent, IonList, IonLoading, IonPage, IonToast } from '@ionic/react';
 import './Homepage.css';
 import { useEffect, useState } from 'react';
 import { App } from '@capacitor/app';
 import { useDispatch, useSelector } from 'react-redux';
-import { reset } from '../redux/checkinRedux';
+import { checkOut, reset } from '../redux/checkinRedux';
 import axios from 'axios';
 import BusCard from '../components/BusCard';
 
 const Homepage: React.FC = () => {
   const [data, setData] = useState([]);
-  const { isSuccess } = useSelector((state)=> (state as any).checkin)
+  const { isSuccess, currentBus } = useSelector((state: any)=> state.checkin)
   const [loading, setLoading] = useState(true);
   const [errorLoadData, setErrorLoadData] = useState(false);
   const dispatch = useDispatch();
-  
-  
+
+  const checkOutNow = (licensePlate: number) => {
+    axios
+        .patch(`http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/checkinout/decrement/${licensePlate}`)
+        .then(() => dispatch(checkOut()))
+        .then(() => window.location.reload())
+        .catch((err) => console.log(err))
+
+}
+
   setTimeout(()=>{
     dispatch(reset())
   }, 2500);
@@ -68,6 +76,15 @@ const Homepage: React.FC = () => {
             <div className="legend-container">
               <div className="red-line-legend-main-header"></div>
               <div className="legend-info">Stasiun UI - Hukum</div>
+            </div>
+            <div className="check-in-container">
+            {currentBus ?
+                            <IonButton className='btn' color={'danger'} onClick={() => checkOutNow(currentBus)}>Check-Out</IonButton>
+                            :
+                            <IonButton className='btn' routerLink='/check-in/qrcode'>Check-in</IonButton>
+
+                        }
+            
             </div>
           </div>
         </div>
