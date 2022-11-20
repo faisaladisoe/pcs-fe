@@ -11,8 +11,6 @@ import axios from 'axios';
 
 const ScannerCheckIn: React.FC = () => {
     const history = useHistory();
-    const location = useLocation();
-    const licensePlateNumber = location.pathname.split('/')[3];
     const [err, setErr] = useState<string>();
     const [useNFC, setNFC] = useState(false);
     const dispatch = useDispatch();
@@ -48,7 +46,7 @@ const ScannerCheckIn: React.FC = () => {
         // if the result has content
         if (result.hasContent) {
             console.log(result.content); // log the raw scanned content
-            if (licensePlateNumber === result.content) {
+            if (result.content) {
                 var config = {
                     method: 'patch',
                     url: `http://ec2-54-251-180-24.ap-southeast-1.compute.amazonaws.com:3000/api/v1/checkinout/increment/${result.content}`,
@@ -57,7 +55,7 @@ const ScannerCheckIn: React.FC = () => {
 
                 axios(config)
                     .then((res) => {
-                        dispatch(checkInSuccess(licensePlateNumber));
+                        dispatch(checkInSuccess(result.content));
                         stopScan();
                     })
                     .catch((err) => {
