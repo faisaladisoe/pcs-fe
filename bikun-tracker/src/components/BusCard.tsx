@@ -59,7 +59,6 @@ const BusCard: React.FC<BusProp> = (props: any): JSX.Element => {
                     </div>
                     <div className="card-btns">
                         <IonButton className='btn' routerLink='/detail'>Detail</IonButton><br />
-                       
                     </div>
                 </IonCardContent>
             </IonCard>

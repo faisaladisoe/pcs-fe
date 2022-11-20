@@ -245,7 +245,7 @@ ion-button {
   }
 }
 
-body.scanner-active {
+body.remove-bg{
   --background: transparent;
   --ion-background-color: transparent;
 }

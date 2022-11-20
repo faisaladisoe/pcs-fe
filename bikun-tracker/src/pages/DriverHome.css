@@ -1,0 +1,9 @@
+.driver-block-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.license-input {
+    margin-left: 5px;
+}
