@@ -58,7 +58,7 @@ const BusCard: React.FC<BusProp> = (props: any): JSX.Element => {
                         <IonCardTitle>{new Date(props.item['updatedAt']).toLocaleString()}</IonCardTitle>
                     </div>
                     <div className="card-btns">
-                        <IonButton className='btn' routerLink='/detail'>Detail</IonButton><br />
+                        <IonButton className='btn' routerLink={`/detail/${props.item['license-plate-number']}`}>Detail</IonButton><br />
                     </div>
                 </IonCardContent>
             </IonCard>
